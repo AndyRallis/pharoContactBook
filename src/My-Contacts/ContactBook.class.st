@@ -13,9 +13,9 @@ Class {
 { #category : #current }
 ContactBook class >> createDefault [ 
 	^ self new
-		addContact: (Contact newNamed: 'Boblahblah' email: 'Bob@lablah.me');
-		addContact: (Contact newNamed: 'Marcus A.' email: 'marcus.a@gmail.com');
-		addContact: (Contact newNamed: 'Clara Voyent' email: 'clari.voyent@gmail.com');
+		addContact: (Contact newNamed: 'Clara Allende' email: 'clari.allende@gmail.com');
+		addContact: (Contact newNamed: 'Damien Cassou' email: 'damien@cassou.me');
+		addContact: (Contact newNamed: 'Marcus Denker' email: 'marcus.denker@inria.fr');
 		yourself
 ]
 
