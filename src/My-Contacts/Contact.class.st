@@ -41,7 +41,7 @@ Contact >> fullname: aFullname [
 
 { #category : #'as yet unclassified' }
 Contact >> gavatarUrl [
-	^ 'http://www.gravatar.com/avatar/', (MD5 hashMessage: email asString trimBoth asLowercase) hex, '.jpg'
+	^ 'http://www.gravatar.com/avatar/', (MD5 hashMessage: email asString trimBoth asLowercase) hex
 ]
 
 { #category : #accessing }

@@ -1,3 +1,6 @@
+"
+I am a contact table view that allows deletion, editing and new contacts. I contain WAContacts
+"
 Class {
 	#name : #WAContactBook,
 	#superclass : #WAComponent,
@@ -12,6 +15,12 @@ WAContactBook class >> initialize [
 	(WAAdmin register: self asApplicationAt: 'contacts')
 		addLibrary: JQDeploymentLibrary;
 		addLibrary: TBSDeploymentLibrary
+]
+
+{ #category : #adding }
+WAContactBook >> addContact [
+	(self call: WAContact new)
+		ifNotNil: [ :contact | contactBook addContact: contact ]
 ]
 
 { #category : #rendering }
@@ -30,12 +39,21 @@ WAContactBook >> contactsDo: aBlock [
 ]
 
 { #category : #rendering }
+WAContactBook >> renderButtonsForContact: aContact on: html [ 	
+	html tbsButtonGroup: [ 
+		self
+			renderEditButtonForContact: aContact on: html;
+			renderRemoveButtonForContact: aContact on: html ]
+]
+
+{ #category : #rendering }
 WAContactBook >> renderContact: aContact on: html [ 
 	html tableRow: [ 
 		html
 			tableData: aContact fullname;
 			tableData: aContact email;
-			tableData: [ self renderPhotoOf: aContact on: html ] ]
+			tableData: [ self renderPhotoOf: aContact on: html ]; 
+			tableData: [ self renderButtonsForContact: aContact on: html ]]
 ]
 
 { #category : #rendering }
@@ -58,12 +76,39 @@ WAContactBook >> renderContentOn: html [
 			html heading 
 				level: 1;
 				with: 'My Contact Book'.
-		self renderContactsOn: html ]
+		html tbsForm: [ 
+			self renderContactsOn: html.
+			self renderGlobalButtonsOn: html ] ]
+]
+
+{ #category : #rendering }
+WAContactBook >> renderEditButtonForContact: aContact on: html [ 	
+	html tbsButton 
+		beSuccess;
+		callback: [ self call: (WAContact editContact: aContact) ];
+		with: 'Edit'
+]
+
+{ #category : #rendering }
+WAContactBook >> renderGlobalButtonsOn: html [ 
+	html tbsButtonGroup: [ 
+		html tbsButton
+			beSuccess;
+			callback: [ self addContact ];
+			with: 'New Contact' ]
 ]
 
 { #category : #rendering }
 WAContactBook >> renderPhotoOf: aContact on: html [ 
 	html image url: aContact gavatarUrl
+]
+
+{ #category : #rendering }
+WAContactBook >> renderRemoveButtonForContact: aContact on: html [
+	html tbsButton
+		beDanger;
+		callback: [ self contactBook removeContact: aContact ];
+		with: 'Remove'
 ]
 
 { #category : #updating }
